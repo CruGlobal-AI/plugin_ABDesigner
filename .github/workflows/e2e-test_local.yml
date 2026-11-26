@@ -86,7 +86,7 @@ jobs:
          - uses: actions/checkout@v6
            with:
               path: web
-              repository: CruGlobal/ab_service_web
+              repository: ${{ github.repository_owner }}/ab_service_web
               ref: ${{ matrix.branch }}
 
          - run: npm i
@@ -97,12 +97,12 @@ jobs:
 
          # webpack expects the folder to be called "web" ab-install action expects "ab_service_web"
          - run: mv web ab_service_web
-         - uses: CruGlobal/ab-install-action@v1
+         - uses: CruGlobal-AI/ab-install-action@v1
            if: ${{ !env.ACT }}
            with:
               port: 8080
               folder: ab
-              repository: CruGlobal/ab_service_web
+              repository: ${{ github.repository_owner }}/ab_service_web
 
          # ab-install-action always runs `docker swarm init`; Docker Desktop is often already in swarm.
          - name: AppBuilder install (act)
@@ -112,7 +112,7 @@ jobs:
               if ! docker info --format '{{.Swarm.LocalNodeState}}' 2>/dev/null | grep -q active; then
                 docker swarm init
               fi
-              npm i https://github.com/CruGlobal/ab-cli -g
+              npm i https://github.com/CruGlobal-AI/ab-cli -g
               appbuilder install ab \
                 --stack=ab \
                 --port=8080 \
@@ -137,7 +137,7 @@ jobs:
          - name: Check out kitchen-sink tests
            uses: actions/checkout@v6
            with:
-              repository: CruGlobal/kitchensink_app
+              repository: ${{ github.repository_owner }}/kitchensink_app
               path: ab/test/e2e/cypress/e2e/kitchensink_app
 
          - name: Run Cypress Tests
