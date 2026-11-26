@@ -10,7 +10,7 @@ jobs:
     name: Label
     # Only run if the PR closed by merging and we have a label
     if: ${{ github.event.pull_request.merged }}
-    uses: CruGlobal/.github/.github/workflows/get-pr-release-label.yml@main
+    uses: CruGlobal-AI/ab-workflows/.github/workflows/get-pr-release-label.yml@main
   call-e2e-tests:
     name: Test
     needs: [call-get-label]
@@ -18,32 +18,32 @@ jobs:
     if: ${{ needs.call-get-label.outputs.valid == 'true' }}
     uses: ./.github/workflows/e2e-test.yml
     with:
-      app_id: ${{ vars.GS_DEV_APP_ID }}
+      app_id: ${{ vars.DS_GH_APP_ID }}
     secrets:
       # app_id: ${{ secrets.GS_DEV_APP_ID }}
-      app_secret: ${{ secrets.GS_DEV_APP_PK }}
+      app_secret: ${{ secrets.DS_GH_APP_PK }}
   call-bump-version:
     name: Version
     # Only run if tests pass
     needs: [call-get-label, call-e2e-tests]
-    uses: CruGlobal/.github/.github/workflows/bump-version.yml@main
+    uses: CruGlobal-AI/ab-workflows/.github/workflows/bump-version.yml@main
     with:
       ref: ${{ github.ref }}
       type: ${{ needs.call-get-label.outputs.label }}
   call-create-release:
     name: Release
-    uses: CruGlobal/.github/.github/workflows/create-release.yml@main
+    uses: CruGlobal-AI/ab-workflows/.github/workflows/create-release.yml@main
     needs: [call-bump-version]
     with:
       tag: v${{ needs.call-bump-version.outputs.new_version }}
   call-dispatch-web-update:
     needs: [call-bump-version, call-get-label]
-    uses: CruGlobal/.github/.github/workflows/dispatch-update.yml@main
+    uses: CruGlobal-AI/ab-workflows/.github/workflows/dispatch-update.yml@main
     with:
       dispatch_repos: '["ab_service_web"]'
       dispatch_type: web_new_version
       type: ${{ needs.call-get-label.outputs.label }}
       version: ${{ needs.call-bump-version.outputs.new_version }}
-      app_id: ${{ vars.GS_DEV_APP_ID }}
+      app_id: ${{ vars.DS_GH_APP_ID }}
     secrets:
-      app_secret: ${{ secrets.GS_DEV_APP_PK }}
+      app_secret: ${{ secrets.DS_GH_APP_PK }}

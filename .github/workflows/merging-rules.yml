@@ -16,6 +16,6 @@ jobs:
    e2e-tests:
       uses: ./.github/workflows/e2e-test.yml
       with:
-         app_id: ${{ vars.GS_DEV_APP_ID }}
+         app_id: ${{ vars.DS_GH_APP_ID }}
       secrets:
-         app_secret: ${{ secrets.GS_DEV_APP_PK }}
+         app_secret: ${{ secrets.DS_GH_APP_PK }}
