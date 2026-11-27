@@ -1,4 +1,5 @@
-# Local / act mirror of e2e-test.yml — edit freely here; do not change e2e-test.yml.
+# Local / act version of the E2E test. e2e-test.yml now wraps the shared ab-workflows cypress-e2e-tests.yml;
+# this file keeps the act-friendly steps for running E2E on your machine (npm run act).
 name: E2E Tests (local / act)
 on:
    workflow_call:
