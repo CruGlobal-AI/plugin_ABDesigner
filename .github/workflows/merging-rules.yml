@@ -14,8 +14,13 @@ jobs:
          - run: npm test
 
    e2e-tests:
-      uses: ./.github/workflows/e2e-test.yml
+      uses: CruGlobal-AI/ab-workflows/.github/workflows/cypress-e2e-tests.yml@e2e-speedup
       with:
+         config: ab-designer
+         build_web: true
+         checkout_path: plugins/plugin_ABDesigner
+         folder: ab
+         port: "8080"
          app_id: ${{ vars.DS_GH_APP_ID }}
       secrets:
          app_secret: ${{ secrets.DS_GH_APP_PK }}
