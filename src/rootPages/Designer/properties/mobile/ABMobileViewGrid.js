@@ -56,6 +56,9 @@ export default function (AB) {
                label: L("Columns"),
                placeholder: L("Pick the fields to show"),
                labelWidth: uiConfig.labelWidthLarge,
+               // multicombo needs options at create time, or it has no
+               // suggest list and webix throws on render ("linkInput").
+               options: [],
                on: {
                   onChange: () => {
                      this.onChange();
@@ -168,9 +171,12 @@ export default function (AB) {
             });
          }
 
-         const ids = this.ids;
-         $$(ids.columns).define("options", fieldOptions);
-         $$(ids.columns).refresh();
+         // multicombo: load options through its suggest list. Using
+         // define("options") + refresh() re-renders the input before the
+         // suggest is linked and webix throws on "linkInput".
+         const $list = $$(this.ids.columns).getList();
+         $list.clearAll();
+         $list.parse(fieldOptions);
       }
 
       populate(view) {
