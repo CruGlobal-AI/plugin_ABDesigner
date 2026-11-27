@@ -157,6 +157,7 @@ export default function (AB) {
          require("./mobile/ABMobileViewFormSelectSingle"),
          require("./mobile/ABMobileViewFormTextbox"),
          require("./mobile/ABMobileViewLabel"),
+         require("./mobile/ABMobileViewGrid"),
          require("./mobile/ABMobileViewList"),
          require("./mobile/ABMobileViewTimeline"),
       ].forEach((V) => {
